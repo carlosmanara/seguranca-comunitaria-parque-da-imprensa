@@ -1,0 +1,5 @@
+   [run]
+   source = ocorrencias
+   omit =
+       */migrations/*
+       */tests/*
