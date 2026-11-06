@@ -38,6 +38,13 @@ class OcorrenciaForm(forms.ModelForm):
         self.fields["tipo"].empty_label = "Selecione o tipo"
         self.fields["data_hora"].input_formats = ["%Y-%m-%dT%H:%M", "%d/%m/%Y %H:%M"]
 
+        # Visual do Bootstrap: campos grandes, bons para o toque no celular (RNF04).
+        for nome, campo in self.fields.items():
+            if nome == "tipo":
+                campo.widget.attrs["class"] = "form-select form-select-lg"
+            else:
+                campo.widget.attrs["class"] = "form-control form-control-lg"
+
     def clean_data_hora(self):
         # RF02: a data e a hora não podem estar no futuro.
         valor = self.cleaned_data["data_hora"]
