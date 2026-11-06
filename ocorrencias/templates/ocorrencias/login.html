@@ -1,0 +1,25 @@
+{% extends "ocorrencias/base.html" %}
+
+{% block titulo %}Acesso da administradora{% endblock %}
+
+{% block conteudo %}
+  <a href="{% url 'ocorrencias:entrada' %}" class="d-inline-block py-2 fw-semibold">← Voltar</a>
+  <h1 class="h3 mb-3">Acesso da administradora</h1>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="mb-3">
+      <label for="id_username" class="form-label fw-semibold">Usuário</label>
+      <input type="text" name="username" id="id_username" class="form-control form-control-lg" autocomplete="username" required>
+    </div>
+    <div class="mb-3">
+      <label for="id_password" class="form-label fw-semibold">Senha</label>
+      <input type="password" name="password" id="id_password" class="form-control form-control-lg" autocomplete="current-password" required>
+    </div>
+    {% if form.errors %}
+      <div class="text-danger fw-semibold mb-3" role="alert">⚠ Usuário ou senha incorretos. Confira e tente de novo.</div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold">Entrar</button>
+  </form>
+{% endblock %}

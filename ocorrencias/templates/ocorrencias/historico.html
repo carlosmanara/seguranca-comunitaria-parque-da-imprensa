@@ -1,0 +1,43 @@
+{% extends "ocorrencias/base.html" %}
+
+{% block titulo %}Histórico de ocorrências{% endblock %}
+
+{% block conteudo %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Histórico</h1>
+    <form method="post" action="{% url 'ocorrencias:sair' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-primary fw-bold">Sair</button>
+    </form>
+  </div>
+
+  <form method="get" class="card card-body mb-3" novalidate>
+    {% for campo in form %}
+      <div class="mb-2">
+        <label for="{{ campo.id_for_label }}" class="form-label fw-semibold">{{ campo.label }}</label>
+        {{ campo }}
+        {% for erro in campo.errors %}
+          <div class="text-danger fw-semibold mt-1" role="alert">⚠ {{ erro }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    {% for erro in form.non_field_errors %}
+      <div class="text-danger fw-semibold mb-2" role="alert">⚠ {{ erro }}</div>
+    {% endfor %}
+    <div class="d-flex gap-2 mt-2">
+      <button type="submit" class="btn btn-primary btn-lg flex-fill fw-bold">Filtrar</button>
+      <a href="{% url 'ocorrencias:historico' %}" class="btn btn-outline-primary btn-lg flex-fill fw-bold">Limpar</a>
+    </div>
+  </form>
+
+  {% for o in ocorrencias %}
+    <div class="card card-body mb-2">
+      <strong>{{ o.rua }}</strong>
+      {% if o.ponto_referencia %}<span>{{ o.ponto_referencia }}</span>{% endif %}
+      <span>{{ o.data_hora|date:"d/m/Y H:i" }}</span>
+      <span class="fw-bold">Tipo: {{ o.tipo.nome }}</span>
+    </div>
+  {% empty %}
+    <p class="fw-semibold">ℹ Nenhuma ocorrência encontrada.</p>
+  {% endfor %}
+{% endblock %}
