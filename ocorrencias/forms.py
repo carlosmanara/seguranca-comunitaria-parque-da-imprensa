@@ -53,3 +53,40 @@ class OcorrenciaForm(forms.ModelForm):
                 "A data e a hora não podem ser futuras. Confira e corrija."
             )
         return valor
+
+class FiltroHistoricoForm(forms.Form):
+    rua = forms.CharField(label="Rua", required=False, max_length=120)
+    data_inicial = forms.DateField(
+        label="Data inicial",
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+    data_final = forms.DateField(
+        label="Data final",
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+    tipo = forms.ModelChoiceField(
+        label="Tipo",
+        required=False,
+        queryset=TipoOcorrencia.objects.all(),
+        empty_label="Todos",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for nome, campo in self.fields.items():
+            if nome == "tipo":
+                campo.widget.attrs["class"] = "form-select form-select-lg"
+            else:
+                campo.widget.attrs["class"] = "form-control form-control-lg"
+
+    def clean(self):
+        dados = super().clean()
+        inicial = dados.get("data_inicial")
+        final = dados.get("data_final")
+        if inicial and final and inicial > final:
+            raise forms.ValidationError(
+                "A data inicial não pode ser depois da data final. Confira e corrija."
+            )
+        return dados
