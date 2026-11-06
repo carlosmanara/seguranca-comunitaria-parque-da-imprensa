@@ -121,3 +121,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Login da administradora (RNF01)
+LOGIN_URL = "ocorrencias:entrar"
+LOGIN_REDIRECT_URL = "ocorrencias:historico"
+LOGOUT_REDIRECT_URL = "ocorrencias:entrada"
